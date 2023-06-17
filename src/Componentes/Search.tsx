@@ -1,9 +1,13 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, MouseEvent } from 'react';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import { AlbumType } from '../types';
 
 export function Search() {
 // ----------------------ESTADOS--------------------------------
   const [btnState, setBtnState] = useState(false);
   const [inptLog, setInpt] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [albums, setAlbums] = useState<AlbumType[]>([]);
 
   // ----------------------FUNCOES--------------------------------
   const handleBTNChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -14,8 +18,25 @@ export function Search() {
     }
   };
 
+  const handleBuscaBtn = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const albumsAchados = await searchAlbumsAPI(inptLog);
+    setAlbums(albumsAchados);
+    setLoading(false);
+  };
+
+  // ------------------------ FORM ---------------------------------------
+
+  if (loading) {
+    return (
+      <p>Carregando...</p>
+    );
+  }
   return (
-    <form action="">
+    <form>
       <label htmlFor="busca">Busca</label>
       <input
         type="text"
@@ -30,6 +51,7 @@ export function Search() {
         type="submit"
         data-testid="search-artist-button"
         disabled={ !btnState }
+        onClick={ handleBuscaBtn }
       >
         Pesquisar
       </button>
