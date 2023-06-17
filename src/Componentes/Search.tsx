@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, MouseEvent } from 'react';
+import { Link } from 'react-router-dom';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import { AlbumType } from '../types';
 
@@ -7,6 +8,7 @@ export function Search() {
   const [btnState, setBtnState] = useState(false);
   const [inptLog, setInpt] = useState('');
   const [loading, setLoading] = useState(false);
+  const [artista, setArtista] = useState('');
   const [albums, setAlbums] = useState<AlbumType[]>([]);
 
   // ----------------------FUNCOES--------------------------------
@@ -26,6 +28,8 @@ export function Search() {
     const albumsAchados = await searchAlbumsAPI(inptLog);
     setAlbums(albumsAchados);
     setLoading(false);
+    setArtista(inptLog);
+    setInpt('');
   };
 
   // ------------------------ FORM ---------------------------------------
@@ -55,6 +59,23 @@ export function Search() {
       >
         Pesquisar
       </button>
+
+      <section>
+        <h1>
+          {`Resultado de álbuns de: ${artista}`}
+        </h1>
+        { albums.length > 0
+          ? albums.map((alb) => (
+            <Link
+              data-testid={ `link-to-album-${alb.collectionId}` }
+              key={ alb.artistId }
+              to={ `/album/${alb.collectionId}` }
+            >
+              {alb.collectionName}
+            </Link>
+          ))
+          : <h1>Nenhum álbum foi encontrado</h1>}
+      </section>
     </form>
   );
 }
