@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AlbumType, SongType } from '../types';
 import getMusics from '../services/musicsAPI';
+import MusicCard from './MusicCard';
 
 function Album() {
   const [musica, setMusica] = useState<[AlbumType, ...SongType[]] | []>([]);
@@ -33,6 +34,17 @@ function Album() {
       <h2 data-testid="album-name">
         {musica[0]?.collectionName}
       </h2>
+
+      {
+        musicasArray.map((track: any) => {
+          return (<MusicCard
+            key={ track.trackId }
+            trackName={ track.trackName }
+            previewUrl={ track.previewUrl }
+            trackId={ track.trackId }
+          />);
+        })
+      }
     </section>
   );
 }
