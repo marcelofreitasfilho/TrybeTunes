@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { AlbumType, SongType } from '../types';
 import getMusics from '../services/musicsAPI';
 import MusicCard from './MusicCard';
+import '../styles/albumStyle.css';
 
 function Album() {
   const [musica, setMusica] = useState<[AlbumType, ...SongType[]] | []>([]);
@@ -27,6 +28,8 @@ function Album() {
   }
   return (
     <section>
+      <img src={ musica[0]?.artworkUrl100 } alt="" />
+
       <h2 data-testid="artist-name">
         {musica[0]?.artistName}
       </h2>

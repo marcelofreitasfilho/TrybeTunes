@@ -70,8 +70,21 @@ export function Search() {
               data-testid={ `link-to-album-${alb.collectionId}` }
               key={ alb.artistId }
               to={ `/album/${alb.collectionId}` }
+              style={ {
+                width: '25px',
+                height: '15px',
+              } }
             >
-              {alb.collectionName}
+              <div
+                style={ {
+                  padding: '25px',
+                  fontStyle: 'inherit',
+                  backgroundColor: 'black',
+                } }
+              >
+                <img src={ alb.artworkUrl100 } alt="" />
+                <p>{alb.collectionName}</p>
+              </div>
             </Link>
           ))
           : <h1>Nenhum álbum foi encontrado</h1>}
